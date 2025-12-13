@@ -20,7 +20,7 @@ interface MapViewProps {
   attractions: Attraction[];
   selectedAttraction: Attraction | null;
   onAttractionSelect: (attraction: Attraction | null) => void;
-  onAddToItinerary: (attraction: Attraction) => void;
+  onAddToItinerary?: (attraction: Attraction) => void;
 }
 
 export default function MapView({
@@ -108,18 +108,16 @@ export default function MapView({
                   duration: 1,
                   repeat: isSelected ? Infinity : 0,
                 }}
-                className={`relative ${
-                  isSelected
-                    ? 'w-12 h-12'
-                    : 'w-10 h-10'
-                }`}
+                className={`relative ${isSelected
+                  ? 'w-12 h-12'
+                  : 'w-10 h-10'
+                  }`}
               >
                 <div
-                  className={`absolute inset-0 rounded-full ${
-                    isSelected
-                      ? 'bg-gradient-to-br from-emerald-400 to-blue-500'
-                      : 'bg-gradient-to-br from-red-500 to-orange-500'
-                  } shadow-2xl flex items-center justify-center`}
+                  className={`absolute inset-0 rounded-full ${isSelected
+                    ? 'bg-gradient-to-br from-emerald-400 to-blue-500'
+                    : 'bg-gradient-to-br from-red-500 to-orange-500'
+                    } shadow-2xl flex items-center justify-center`}
                 >
                   <MapPin className="w-6 h-6 text-white" />
                 </div>
@@ -218,13 +216,16 @@ export default function MapView({
                   </div>
                 </div>
 
-                <Button
-                  onClick={() => onAddToItinerary(selectedAttraction)}
-                  className="w-full"
-                  icon={<Camera className="w-4 h-4" />}
-                >
-                  Add to Itinerary
-                </Button>
+
+                {onAddToItinerary && (
+                  <Button
+                    onClick={() => onAddToItinerary(selectedAttraction)}
+                    className="w-full"
+                    icon={<Camera className="w-4 h-4" />}
+                  >
+                    Add to Itinerary
+                  </Button>
+                )}
               </div>
             </div>
           </motion.div>

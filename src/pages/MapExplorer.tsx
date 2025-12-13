@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Filter, Search } from 'lucide-react';
 import { useAttractions } from '../hooks/useAPI';
-import { toast } from 'sonner@2.0.3';
 import GlassCard from '../components/ui/GlassCard';
 import MapView from '../components/map/MapView';
 
@@ -20,9 +19,9 @@ export default function MapExplorer() {
     return matchesCategory && matchesSearch;
   });
 
-  const handleAddToItinerary = (attraction: any) => {
-    toast.success(`${attraction.name} added to your itinerary!`);
-  };
+  // const handleAddToItinerary = (attraction: any) => {
+  //   toast.success(`${attraction.name} added to your itinerary!`);
+  // };
 
   if (isLoading) {
     return (
@@ -75,11 +74,10 @@ export default function MapExplorer() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                    selectedCategory === category
-                      ? 'bg-gradient-to-r from-emerald-500 to-blue-600 text-white shadow-lg'
-                      : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm transition-all ${selectedCategory === category
+                    ? 'bg-gradient-to-r from-emerald-500 to-blue-600 text-white shadow-lg'
+                    : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
                 >
                   {category}
                 </motion.button>
@@ -96,7 +94,7 @@ export default function MapExplorer() {
                 attractions={filteredAttractions || []}
                 selectedAttraction={selectedAttraction}
                 onAttractionSelect={setSelectedAttraction}
-                onAddToItinerary={handleAddToItinerary}
+              // onAddToItinerary={handleAddToItinerary}
               />
             </div>
           </GlassCard>
