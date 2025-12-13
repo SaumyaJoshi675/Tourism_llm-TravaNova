@@ -1,16 +1,24 @@
-import { motion } from 'motion/react';
-import { ReactNode } from 'react';
+import { motion } from "motion/react"
+import { ReactNode, CSSProperties } from "react"
 
 interface GlassCardProps {
-  children: ReactNode;
-  className?: string;
-  hover?: boolean;
-  delay?: number;
+  children: ReactNode
+  className?: string
+  hover?: boolean
+  delay?: number
+  style?: CSSProperties
 }
 
-export default function GlassCard({ children, className = '', hover = true, delay = 0 }: GlassCardProps) {
+export default function GlassCard({
+  children,
+  className = "",
+  hover = true,
+  delay = 0,
+  style
+}: GlassCardProps) {
   return (
     <motion.div
+      style={style}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
@@ -24,9 +32,7 @@ export default function GlassCard({ children, className = '', hover = true, dela
       `}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-slate-700/40 pointer-events-none" />
-      <div className="relative z-10">
-        {children}
-      </div>
+      <div className="relative z-10">{children}</div>
     </motion.div>
-  );
+  )
 }
