@@ -1,0 +1,29 @@
+{
+  "name": "uttarakhand-tourism-llm-frontend",
+  "version": "1.0.0",
+  "description": "AI-powered Tourism Assistant for Uttarakhand - Hackathon Frontend",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.0",
+    "@tanstack/react-query": "^5.0.0",
+    "motion": "^11.0.0",
+    "sonner": "^2.0.3",
+    "lucide-react": "^0.344.0",
+    "recharts": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
