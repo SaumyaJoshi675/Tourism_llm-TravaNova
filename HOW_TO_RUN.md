@@ -12,9 +12,9 @@ This server handles searching Google/DuckDuckGo and scraping travel sites.
    ```
 3. Run the server:
    ```bash
-   node server/index.js
+   node server/src/index.js
    ```
-   *You should see: `🚀 Search & Scrape Server running on http://localhost:3001`*
+   *You should see: `🚀 Travel AI Backend running on port 5000`*
    *Keep this terminal OPEN. Do not close it.*
 
 ---

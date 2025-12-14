@@ -28,7 +28,7 @@ export default defineConfig({
   define: {
     // Ensure environment variables are available
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
-      process.env.VITE_API_BASE_URL || 'http://localhost:8000'
+      process.env.VITE_API_BASE_URL || 'http://localhost:5000'
     ),
   },
 });
