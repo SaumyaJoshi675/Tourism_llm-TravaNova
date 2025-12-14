@@ -4,7 +4,6 @@ import { Send, Loader2, Image as ImageIcon, Mic, MapPin, Sparkles, BrainCircuit 
 import { toast } from 'sonner';
 import GlassCard from '../components/ui/GlassCard';
 import Button from '../components/ui/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LLMService } from '../lib/webllm';
@@ -34,8 +33,6 @@ export default function ChatAssistant() {
   const [status, setStatus] = useState<'idle' | 'searching' | 'generating'>('idle');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { language } = useLanguage(); // Keep if actually used for locale, but remove if genuinely unused. 
-  // Actually language is used in lines 222-225 for locale string. Keep it.
 
   // Remove unused loadProgress/loadText
 
