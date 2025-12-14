@@ -1,14 +1,12 @@
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare, Route, Calendar, Map, Sparkles, TrendingUp, Shield, Zap, ArrowRight, ChevronDown } from 'lucide-react';
+import { MessageSquare, Route, Calendar, Map, Sparkles, TrendingUp, Shield, ArrowRight, ChevronDown } from 'lucide-react';
 import GlassCard from '../components/ui/GlassCard';
 import Button from '../components/ui/Button';
 import { useLanguage } from '../contexts/LanguageContext';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import MostVisitedPlaces from '../components/home/MostVisitedPlaces';
 import SmartTravelInsights from '../components/home/SmartTravelInsights';
 import MoodBasedTrips from '../components/home/MoodBasedTrips';
-import SectionDivider from '../components/ui/SectionDivider';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -58,7 +56,7 @@ export default function Home() {
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Animated Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-emerald-500 to-teal-600 opacity-90" />
-        
+
         {/* Animated Orbs */}
         <motion.div
           className="absolute top-20 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
@@ -99,14 +97,14 @@ export default function Home() {
               <Sparkles className="w-4 h-4 text-yellow-300" />
               <span className="text-white text-sm">Powered by AI & RAG Technology</span>
             </motion.div>
-            
+
             <h1 className="text-6xl md:text-7xl mb-6 text-white drop-shadow-lg">
               Discover
               <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
                 Uttarakhand
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
               Your intelligent AI companion for exploring the breathtaking landscapes, spiritual sites, and adventure destinations of Uttarakhand
             </p>

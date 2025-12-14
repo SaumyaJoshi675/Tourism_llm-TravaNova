@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, Calendar, DollarSign, X, Plus, Navigation, Sparkles, Camera } from 'lucide-react';
+import { MapPin, Calendar, X, Plus, Navigation, Sparkles, Camera } from 'lucide-react';
 import { mostVisitedPlaces, MostVisitedPlace } from '../../data/mostVisitedPlaces';
 import GlassCard from '../ui/GlassCard';
 import Button from '../ui/Button';
@@ -27,9 +27,9 @@ export default function MostVisitedPlaces() {
           <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <span className="text-sm text-emerald-600 dark:text-emerald-400">Most Popular</span>
         </motion.div>
-        
+
         <h2 className="text-4xl md:text-5xl mb-4 bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-          Most Visited Places in Uttarakhand
+          Most Visited Places in India
         </h2>
         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           Discover the breathtaking destinations that captivate thousands of travelers
@@ -62,7 +62,7 @@ export default function MostVisitedPlaces() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  
+
                   {/* Category Badge */}
                   <div className="absolute top-3 right-3 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full text-xs">
                     {place.category}
@@ -87,32 +87,27 @@ export default function MostVisitedPlaces() {
                   <p className="text-sm text-emerald-600 dark:text-emerald-400 mb-3">
                     {place.tagline}
                   </p>
-                  
+
                   {/* Info */}
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                       <Calendar className="w-4 h-4" />
                       <span>{place.bestSeason}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                      <DollarSign className="w-4 h-4" />
-                      <span>{place.costRange.split(' ')[0]}</span>
-                    </div>
                   </div>
 
                   {/* Action Button */}
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="w-full group/btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/map');
-                    }}
-                  >
-                    <Navigation className="w-4 h-4 mr-2 group-hover/btn:rotate-45 transition-transform" />
-                    View on Map
-                  </Button>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="w-full group/btn"
+                      onClick={() => navigate('/map')}
+                    >
+                      <Navigation className="w-4 h-4 mr-2 group-hover/btn:rotate-45 transition-transform" />
+                      View on Map
+                    </Button>
+                  </div>
                 </div>
               </GlassCard>
             </motion.div>
@@ -121,8 +116,8 @@ export default function MostVisitedPlaces() {
       </div>
 
       {/* Interactive Mini Map */}
-      <MiniMap 
-        places={mostVisitedPlaces} 
+      <MiniMap
+        places={mostVisitedPlaces}
         hoveredId={hoveredCard}
         onPlaceHover={setHoveredCard}
         onPlaceClick={setSelectedPlace}
@@ -138,12 +133,12 @@ export default function MostVisitedPlaces() {
 }
 
 // Mini Map Component
-function MiniMap({ 
-  places, 
+function MiniMap({
+  places,
   hoveredId,
   onPlaceHover,
-  onPlaceClick 
-}: { 
+  onPlaceClick
+}: {
   places: MostVisitedPlace[];
   hoveredId: string | null;
   onPlaceHover: (id: string | null) => void;
@@ -175,7 +170,7 @@ function MiniMap({
             <MapPin className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             Interactive Location Map
           </h3>
-          
+
           <div className="relative w-full h-[400px] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
             {/* Map Background */}
             <div
@@ -229,11 +224,10 @@ function MiniMap({
                     className="relative"
                   >
                     <motion.div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shadow-2xl ${
-                        isHovered
-                          ? 'bg-gradient-to-br from-emerald-400 to-blue-500'
-                          : 'bg-gradient-to-br from-orange-500 to-red-500'
-                      }`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center shadow-2xl ${isHovered
+                        ? 'bg-gradient-to-br from-emerald-400 to-blue-500'
+                        : 'bg-gradient-to-br from-orange-500 to-red-500'
+                        }`}
                       animate={{
                         boxShadow: isHovered
                           ? '0 0 30px rgba(16, 185, 129, 0.6)'
@@ -246,9 +240,9 @@ function MiniMap({
                     {/* Ping Effect */}
                     {isHovered && (
                       <motion.div
-                        animate={{ 
-                          scale: [1, 2.5, 1], 
-                          opacity: [0.5, 0, 0.5] 
+                        animate={{
+                          scale: [1, 2.5, 1],
+                          opacity: [0.5, 0, 0.5]
                         }}
                         transition={{ duration: 2, repeat: Infinity }}
                         className="absolute inset-0 rounded-full bg-emerald-400"
@@ -297,10 +291,10 @@ function MiniMap({
 }
 
 // Place Detail Modal
-function PlaceDetailModal({ 
-  place, 
-  onClose 
-}: { 
+function PlaceDetailModal({
+  place,
+  onClose
+}: {
   place: MostVisitedPlace | null;
   onClose: () => void;
 }) {
@@ -339,7 +333,7 @@ function PlaceDetailModal({
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            
+
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -361,11 +355,10 @@ function PlaceDetailModal({
               <button
                 key={index}
                 onClick={() => setSelectedGalleryImage(index)}
-                className={`relative w-20 h-20 rounded-lg overflow-hidden transition-all ${
-                  selectedGalleryImage === index
-                    ? 'ring-2 ring-emerald-500 scale-105'
-                    : 'opacity-60 hover:opacity-100'
-                }`}
+                className={`relative w-20 h-20 rounded-lg overflow-hidden transition-all ${selectedGalleryImage === index
+                  ? 'ring-2 ring-emerald-500 scale-105'
+                  : 'opacity-60 hover:opacity-100'
+                  }`}
               >
                 <img src={img} alt={`${place.name} ${index + 1}`} className="w-full h-full object-cover" />
               </button>
@@ -375,7 +368,7 @@ function PlaceDetailModal({
           {/* Content */}
           <div className="p-6 space-y-6">
             {/* Quick Info */}
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
                   <Calendar className="w-5 h-5 text-white" />
@@ -383,16 +376,6 @@ function PlaceDetailModal({
                 <div>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Best Season</p>
                   <p className="font-medium">{place.bestSeason}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
-                  <DollarSign className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">Cost Range</p>
-                  <p className="font-medium">{place.costRange}</p>
                 </div>
               </div>
 
