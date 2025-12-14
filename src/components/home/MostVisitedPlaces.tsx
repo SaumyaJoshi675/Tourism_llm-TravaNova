@@ -29,7 +29,7 @@ export default function MostVisitedPlaces() {
         </motion.div>
 
         <h2 className="text-4xl md:text-5xl mb-4 bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-          Most Visited Places in India
+          Most Visited Places Across India
         </h2>
         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           Discover the breathtaking destinations that captivate thousands of travelers
@@ -81,8 +81,10 @@ export default function MostVisitedPlaces() {
                   </motion.div>
                 </div>
 
-                {/* Content */}
                 <div className="p-4">
+                  <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-1 uppercase tracking-wider">
+                    {place.state}
+                  </div>
                   <h3 className="text-xl mb-2">{place.name}</h3>
                   <p className="text-sm text-emerald-600 dark:text-emerald-400 mb-3">
                     {place.tagline}
@@ -145,10 +147,10 @@ function MiniMap({
   onPlaceClick: (place: MostVisitedPlace) => void;
 }) {
   const mapBounds = {
-    minLat: 29.0,
-    maxLat: 31.5,
-    minLng: 77.5,
-    maxLng: 81.0,
+    minLat: Math.min(...places.map(p => p.latitude)) - 0.5,
+    maxLat: Math.max(...places.map(p => p.latitude)) + 0.5,
+    minLng: Math.min(...places.map(p => p.longitude)) - 0.5,
+    maxLng: Math.max(...places.map(p => p.longitude)) + 0.5,
   };
 
   const getPosition = (lat: number, lng: number) => {
@@ -344,6 +346,7 @@ function PlaceDetailModal({
 
             {/* Title Overlay */}
             <div className="absolute bottom-6 left-6 right-6">
+              <div className="text-emerald-300 font-medium mb-1 uppercase tracking-wider text-sm">{place.state}</div>
               <h2 className="text-3xl md:text-4xl text-white mb-2">{place.name}</h2>
               <p className="text-emerald-300 text-lg">{place.tagline}</p>
             </div>

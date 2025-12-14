@@ -37,7 +37,7 @@ export default function Navbar() {
               <Mountain className="w-6 h-6 text-white" />
             </motion.div>
             <span className="font-bold text-xl bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-              Explore India
+              TravaNova AI
             </span>
           </Link>
 

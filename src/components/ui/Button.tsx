@@ -1,9 +1,9 @@
 import { motion } from 'motion/react';
-import { ReactNode } from 'react';
+import { ReactNode, MouseEvent } from 'react';
 
 interface ButtonProps {
   children: ReactNode;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
