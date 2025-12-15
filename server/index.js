@@ -151,6 +151,40 @@ app.post('/api/research', async (req, res) => {
     }
 });
 
+const { handleMessage } = require("./chatEngine");
+
+app.post("/chat", async (req, res) => {
+    try {
+        const { session_id, message } = req.body;
+        const reply = await handleMessage(session_id, message);
+
+        // If it's a stream (Ollama response)
+        if (reply && reply.pipe) {
+            res.setHeader('Content-Type', 'text/plain');
+            res.setHeader('Transfer-Encoding', 'chunked');
+
+            reply.on('data', chunk => {
+                const json = JSON.parse(chunk.toString());
+                if (json.response) {
+                    res.write(json.response);
+                }
+                if (json.done) {
+                    res.end();
+                }
+            });
+        } else {
+            // Normal string response (rule-based)
+            res.json({ reply });
+        }
+
+    } catch (err) {
+        console.error(err);
+        if (!res.headersSent) {
+            res.status(500).json({ reply: "Something went wrong." });
+        }
+    }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`\n=================================================`);
