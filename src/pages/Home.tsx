@@ -6,6 +6,7 @@ import GlassCard from '../components/ui/GlassCard';
 import Button from '../components/ui/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import MostVisitedPlaces from '../components/home/MostVisitedPlaces';
+import FeaturedDestination from '../components/home/FeaturedDestination';
 import SmartTravelInsights from '../components/home/SmartTravelInsights';
 import MoodBasedTrips from '../components/home/MoodBasedTrips';
 import { heroStates } from '../data/heroStates';
@@ -245,10 +246,13 @@ export default function Home() {
       </section >
 
       {/* Most Visited Places Section */}
-      < MostVisitedPlaces />
+      <MostVisitedPlaces />
+
+      {/* Featured Destination Section */}
+      <FeaturedDestination />
 
       {/* Smart Travel Insights Section */}
-      < SmartTravelInsights />
+      <SmartTravelInsights />
 
       {/* Mood Based Trips Section */}
       < MoodBasedTrips />

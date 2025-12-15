@@ -134,6 +134,37 @@ export default function MostVisitedPlaces() {
   );
 }
 
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default Leaflet marker icon issues in React
+// We are using custom DivIcons mainly, but good to have standard fix if we fallback
+// @ts-ignore
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+// Component to handle bounds fitting
+function MapBounds({ places }: { places: MostVisitedPlace[] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (places.length === 0) return;
+
+    const bounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
+    map.fitBounds(bounds, {
+      padding: [50, 50],
+      maxZoom: 6,
+    });
+  }, [places, map]);
+
+  return null;
+}
+
 // Mini Map Component
 function MiniMap({
   places,
@@ -146,17 +177,40 @@ function MiniMap({
   onPlaceHover: (id: string | null) => void;
   onPlaceClick: (place: MostVisitedPlace) => void;
 }) {
-  const mapBounds = {
-    minLat: Math.min(...places.map(p => p.latitude)) - 0.5,
-    maxLat: Math.max(...places.map(p => p.latitude)) + 0.5,
-    minLng: Math.min(...places.map(p => p.longitude)) - 0.5,
-    maxLng: Math.max(...places.map(p => p.longitude)) + 0.5,
-  };
 
-  const getPosition = (lat: number, lng: number) => {
-    const x = ((lng - mapBounds.minLng) / (mapBounds.maxLng - mapBounds.minLng)) * 100;
-    const y = ((mapBounds.maxLat - lat) / (mapBounds.maxLat - mapBounds.minLat)) * 100;
-    return { x: `${x}%`, y: `${y}%` };
+  // Custom marker icon creation function
+  const createCustomIcon = (isHovered: boolean, placeName: string) => {
+    // We use a divIcon to render our custom HTML/CSS
+    // This mimics the exact style of the previous static map markers
+    const colorClass = isHovered
+      ? 'bg-gradient-to-br from-emerald-400 to-blue-500 shadow-[0_0_30px_rgba(16,185,129,0.6)] scale-125'
+      : 'bg-gradient-to-br from-orange-500 to-red-500 shadow-[0_0_15px_rgba(249,115,22,0.4)]';
+
+    const pulseHtml = isHovered
+      ? `<div class="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75"></div>`
+      : '';
+
+    const labelHtml = isHovered
+      ? `<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 whitespace-nowrap z-50">
+           <div class="px-3 py-1.5 bg-slate-900 text-white text-sm rounded-lg shadow-xl relative">
+             ${placeName}
+             <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-[-1px] border-4 border-transparent border-b-slate-900"></div>
+           </div>
+         </div>`
+      : '';
+
+    return L.divIcon({
+      className: 'custom-map-marker', // Minimal leaflet class interactions
+      html: `
+        <div class="relative w-full h-full flex items-center justify-center transition-all duration-300 ${colorClass} rounded-full">
+          ${pulseHtml}
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-5 h-5 relative z-10"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${labelHtml}
+        </div>
+      `,
+      iconSize: [40, 40],
+      iconAnchor: [20, 20], // Center it
+    });
   };
 
   return (
@@ -173,106 +227,50 @@ function MiniMap({
             Interactive Location Map
           </h3>
 
-          <div className="relative w-full h-[400px] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
-            {/* Map Background */}
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: 'url(https://images.unsplash.com/photo-1717051041791-47c372799618?w=1920)',
-                filter: 'brightness(0.6) saturate(1.1)',
-              }}
+          <div className="relative w-full h-[400px] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 z-0">
+            <MapContainer
+              center={[20.5937, 78.9629]} // Center of India
+              zoom={5}
+              scrollWheelZoom={false} // Keep it embedded feel
+              className="w-full h-full"
+              attributionControl={false}
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/20 to-slate-900/40" />
-            </div>
+              {/* Dark Matter Tiles for the requested aesthetic */}
+              <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              />
 
-            {/* Grid Overlay */}
-            <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none">
-              <defs>
-                <pattern id="mini-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-                  <path d="M 30 0 L 0 0 0 30" fill="none" stroke="white" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#mini-grid)" />
-            </svg>
+              {/* Overlay Layer: Labels, Borders, and Place Names */}
+              <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+              />
 
-            {/* Place Markers */}
-            {places.map((place, index) => {
-              const pos = getPosition(place.latitude, place.longitude);
-              const isHovered = hoveredId === place.id;
+              {/* Theme Overlay to blend with app aesthetics */}
+              <div className="leaflet-bottom leaflet-left" style={{ pointerEvents: 'none', width: '100%', height: '100%', zIndex: 400 }}>
+                <div className="w-full h-full bg-emerald-900/10 mix-blend-overlay"></div>
+              </div>
 
-              return (
-                <motion.div
-                  key={place.id}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: index * 0.05 }}
-                  style={{
-                    position: 'absolute',
-                    left: pos.x,
-                    top: pos.y,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                  className="z-10"
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.3 }}
-                    whileTap={{ scale: 0.9 }}
-                    animate={{
-                      scale: isHovered ? 1.4 : 1,
+              <MapBounds places={places} />
+
+              {places.map((place) => {
+                const isHovered = hoveredId === place.id;
+
+                return (
+                  <Marker
+                    key={place.id}
+                    position={[place.latitude, place.longitude]}
+                    icon={createCustomIcon(isHovered, place.name)}
+                    eventHandlers={{
+                      click: () => onPlaceClick(place),
+                      mouseover: () => onPlaceHover(place.id),
+                      mouseout: () => onPlaceHover(null),
                     }}
-                    onClick={() => onPlaceClick(place)}
-                    onMouseEnter={() => onPlaceHover(place.id)}
-                    onMouseLeave={() => onPlaceHover(null)}
-                    className="relative"
                   >
-                    <motion.div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shadow-2xl ${isHovered
-                        ? 'bg-gradient-to-br from-emerald-400 to-blue-500'
-                        : 'bg-gradient-to-br from-orange-500 to-red-500'
-                        }`}
-                      animate={{
-                        boxShadow: isHovered
-                          ? '0 0 30px rgba(16, 185, 129, 0.6)'
-                          : '0 0 15px rgba(249, 115, 22, 0.4)',
-                      }}
-                    >
-                      <MapPin className="w-5 h-5 text-white" />
-                    </motion.div>
-
-                    {/* Ping Effect */}
-                    {isHovered && (
-                      <motion.div
-                        animate={{
-                          scale: [1, 2.5, 1],
-                          opacity: [0.5, 0, 0.5]
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute inset-0 rounded-full bg-emerald-400"
-                      />
-                    )}
-
-                    {/* Label */}
-                    <AnimatePresence>
-                      {isHovered && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 whitespace-nowrap"
-                        >
-                          <div className="px-3 py-1.5 bg-slate-900 text-white text-sm rounded-lg shadow-xl">
-                            {place.name}
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-[-4px]">
-                              <div className="border-4 border-transparent border-b-slate-900" />
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.button>
-                </motion.div>
-              );
-            })}
+                  </Marker>
+                );
+              })}
+            </MapContainer>
           </div>
 
           {/* Map Legend */}

@@ -32,7 +32,7 @@
             "@radix-ui/react-tooltip": "^1.1.8",
             "@react-google-maps/api": "^2.20.7",
             "@tanstack/react-query": "*",
-            "@types/leaflet": "^1.9.8",
+            "@types/leaflet": "^1.9.21",
             "@vitejs/plugin-react": "*",
             "axios": "^1.13.2",
             "cheerio": "^1.1.2",
