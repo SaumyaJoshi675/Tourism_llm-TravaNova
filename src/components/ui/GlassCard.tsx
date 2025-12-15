@@ -32,7 +32,7 @@ export default function GlassCard({
       `}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-slate-700/40 pointer-events-none" />
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 h-full w-full">{children}</div>
     </motion.div>
   )
 }

@@ -155,169 +155,172 @@ export default function ChatAssistant() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         <GlassCard hover={false} className="flex-1 flex flex-col border-0 shadow-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl ring-1 ring-slate-200 dark:ring-slate-700">
-          {/* Chat Header */}
-          <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <BrainCircuit className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">TravaNova AI</h2>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-                    Online & Ready
-                  </p>
+          <div className="flex flex-col h-full">
+            {/* Chat Header */}
+            <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <BrainCircuit className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">TravaNova AI</h2>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                      Online & Ready
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
-            <AnimatePresence mode="popLayout">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`max-w-[85%] lg:max-w-[75%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
-                    <div
-                      className={`relative rounded-2xl px-6 py-5 shadow-sm ${message.role === 'user'
-                        ? 'bg-gradient-to-br from-indigo-600 to-violet-700 text-white rounded-tr-sm'
-                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700 rounded-tl-sm'
-                        }`}
-                    >
-                      {message.role === 'user' ? (
-                        <p className="text-black whitespace-pre-wrap leading-relaxed">{message.content}</p>
-                      ) : (
-                        <div className="prose prose-sm max-w-none dark:prose-invert prose-slate prose-headings:text-indigo-600 dark:prose-headings:text-indigo-400 prose-li:marker:text-indigo-500">
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                              a: ({ node, ...props }) => <a {...props} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer" />,
-                              p: ({ node, ...props }) => <p {...props} className="whitespace-pre-wrap leading-relaxed mb-3 text-slate-700 dark:text-slate-300" />,
-                              ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-5 mb-3 space-y-1.5" />,
-                              ol: ({ node, ...props }) => <ol {...props} className="list-decimal pl-5 mb-3 space-y-1.5" />,
-                              li: ({ node, ...props }) => <li {...props} className="mb-0.5 text-slate-700 dark:text-slate-300" />,
-                              h1: ({ node, ...props }) => <h1 {...props} className="text-xl font-bold mb-3 mt-5 pb-2 border-b border-indigo-100 dark:border-indigo-900/30" />,
-                              h2: ({ node, ...props }) => <h2 {...props} className="text-lg font-semibold mb-2 mt-4 text-indigo-700 dark:text-indigo-300" />,
-                              h3: ({ node, ...props }) => <h3 {...props} className="text-base font-semibold mb-1 mt-3" />,
-                              strong: ({ node, ...props }) => <strong {...props} className="font-bold text-slate-900 dark:text-slate-100" />,
-                            }}
-                          >
-                            {message.content}
-                          </ReactMarkdown>
+            {/* Messages Area */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
+              <AnimatePresence mode="popLayout">
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-[85%] lg:max-w-[75%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
+                      <div
+                        className={`relative rounded-2xl px-6 py-5 shadow-sm ${message.role === 'user'
+                          ? 'bg-gradient-to-br from-indigo-600 to-violet-700 text-white rounded-tr-sm'
+                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700 rounded-tl-sm'
+                          }`}
+                        style={message.role === 'user' ? { background: 'linear-gradient(to bottom right, #4f46e5, #6d28d9)', color: 'white' } : {}}
+                      >
+                        {message.role === 'user' ? (
+                          <p className="text-slate-50 whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                        ) : (
+                          <div className="prose prose-sm max-w-none dark:prose-invert prose-slate prose-headings:text-indigo-600 dark:prose-headings:text-indigo-400 prose-li:marker:text-indigo-500">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                a: ({ node, ...props }) => <a {...props} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer" />,
+                                p: ({ node, ...props }) => <p {...props} className="whitespace-pre-wrap leading-relaxed mb-3 text-slate-700 dark:text-slate-300" />,
+                                ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-5 mb-3 space-y-1.5" />,
+                                ol: ({ node, ...props }) => <ol {...props} className="list-decimal pl-5 mb-3 space-y-1.5" />,
+                                li: ({ node, ...props }) => <li {...props} className="mb-0.5 text-slate-700 dark:text-slate-300" />,
+                                h1: ({ node, ...props }) => <h1 {...props} className="text-xl font-bold mb-3 mt-5 pb-2 border-b border-indigo-100 dark:border-indigo-900/30" />,
+                                h2: ({ node, ...props }) => <h2 {...props} className="text-lg font-semibold mb-2 mt-4 text-indigo-700 dark:text-indigo-300" />,
+                                h3: ({ node, ...props }) => <h3 {...props} className="text-base font-semibold mb-1 mt-3" />,
+                                strong: ({ node, ...props }) => <strong {...props} className="font-bold text-slate-900 dark:text-slate-100" />,
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
 
-                          {/* Save Button for Assistant Messages */}
-                          {message.role === 'assistant' && message.content.length > 50 && (
-                            <div className="mt-4 flex justify-end border-t border-slate-100 dark:border-slate-700/50 pt-2">
-                              <button
-                                onClick={() => downloadItinerary(message.content)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-lg transition-colors"
-                                title="Save as text file"
-                              >
-                                <Download className="w-3.5 h-3.5" />
-                                Save Itinerary
-                              </button>
+                            {/* Save Button for Assistant Messages */}
+                            {message.role === 'assistant' && message.content.length > 50 && (
+                              <div className="mt-4 flex justify-end border-t border-slate-100 dark:border-slate-700/50 pt-2">
+                                <button
+                                  onClick={() => downloadItinerary(message.content)}
+                                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-lg transition-colors"
+                                  title="Save as text file"
+                                >
+                                  <Download className="w-3.5 h-3.5" />
+                                  Save Itinerary
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {message.sources && message.sources.length > 0 && (
+                          <div className={`mt-4 pt-3 border-t ${message.role === 'user' ? 'border-white/20' : 'border-slate-200 dark:border-slate-700'}`}>
+                            <div className="flex items-center gap-2 mb-2 opacity-80">
+                              <Sparkles className="w-3 h-3" />
+                              <span className="text-xs font-medium uppercase tracking-wider">Sources</span>
                             </div>
-                          )}
-                        </div>
-                      )}
-
-                      {message.sources && message.sources.length > 0 && (
-                        <div className={`mt-4 pt-3 border-t ${message.role === 'user' ? 'border-white/20' : 'border-slate-200 dark:border-slate-700'}`}>
-                          <div className="flex items-center gap-2 mb-2 opacity-80">
-                            <Sparkles className="w-3 h-3" />
-                            <span className="text-xs font-medium uppercase tracking-wider">Sources</span>
+                            <div className="flex flex-wrap gap-2">
+                              {message.sources.map((source, idx) => (
+                                <span
+                                  key={idx}
+                                  className={`text-xs px-2 py-1 rounded-md ${message.role === 'user'
+                                    ? 'bg-white/10 hover:bg-white/20'
+                                    : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600'
+                                    } transition-colors cursor-default truncate max-w-[200px]`}
+                                >
+                                  {source.name}
+                                </span>
+                              ))}
+                            </div>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            {message.sources.map((source, idx) => (
-                              <span
-                                key={idx}
-                                className={`text-xs px-2 py-1 rounded-md ${message.role === 'user'
-                                  ? 'bg-white/10 hover:bg-white/20'
-                                  : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600'
-                                  } transition-colors cursor-default truncate max-w-[200px]`}
-                              >
-                                {source.name}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
+                      <p className={`text-[10px] mt-2 font-medium opacity-60 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
                     </div>
-                    <p className={`text-[10px] mt-2 font-medium opacity-60 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-2xl w-fit"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
+                    <BrainCircuit className="w-4 h-4 text-white" />
                   </div>
+                  <div className="flex gap-1.5">
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
+                        className="w-2 h-2 bg-indigo-500 rounded-full"
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-medium text-slate-500 uppercase tracking-wider ml-2">
+                    {status === 'searching' ? 'Browsing Internet...' : 'Drafting Answer...'}
+                  </span>
                 </motion.div>
-              ))}
-            </AnimatePresence>
+              )}
 
-            {isTyping && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-2xl w-fit"
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                  <BrainCircuit className="w-4 h-4 text-white" />
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <div className="p-4 m-4 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-200 dark:border-slate-800">
+              <div className="flex items-end gap-2">
+                <div className="flex sm:gap-2">
+                  <button className="p-3 rounded-full hover:bg-white dark:hover:bg-slate-800 text-slate-500 transition-all hover:scale-105 active:scale-95 hover:shadow-sm">
+                    <ImageIcon className="w-5 h-5" />
+                  </button>
+                  <button className="p-3 rounded-full hover:bg-white dark:hover:bg-slate-800 text-slate-500 transition-all hover:scale-105 active:scale-95 hover:shadow-sm">
+                    <Mic className="w-5 h-5" />
+                  </button>
                 </div>
-                <div className="flex gap-1.5">
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
-                      className="w-2 h-2 bg-indigo-500 rounded-full"
-                    />
-                  ))}
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-[2rem] border border-transparent focus-within:border-indigo-500/30 focus-within:ring-4 focus-within:ring-indigo-500/10 transition-all shadow-sm">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                    placeholder="Ask anything about India..."
+                    className="w-full px-6 py-4 bg-transparent border-none focus:outline-none placeholder:text-slate-400 text-slate-700 dark:text-slate-200 disabled:opacity-50"
+                  />
                 </div>
-                <span className="text-xs font-medium text-slate-500 uppercase tracking-wider ml-2">
-                  {status === 'searching' ? 'Browsing Internet...' : 'Drafting Answer...'}
-                </span>
-              </motion.div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Area */}
-          <div className="p-4 m-4 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <div className="flex items-end gap-2">
-              <div className="flex sm:gap-2">
-                <button className="p-3 rounded-full hover:bg-white dark:hover:bg-slate-800 text-slate-500 transition-all hover:scale-105 active:scale-95 hover:shadow-sm">
-                  <ImageIcon className="w-5 h-5" />
-                </button>
-                <button className="p-3 rounded-full hover:bg-white dark:hover:bg-slate-800 text-slate-500 transition-all hover:scale-105 active:scale-95 hover:shadow-sm">
-                  <Mic className="w-5 h-5" />
-                </button>
+                <Button
+                  onClick={handleSend}
+                  disabled={!input.trim()}
+                  className={`rounded-full w-14 h-14 p-0 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/30 ${!input.trim() ? 'opacity-50' : 'hover:scale-105 active:scale-95'
+                    }`}
+                  icon={<Send className="w-5 h-5 translate-x-0.5" />}
+                >
+                  {/* Empty child to fix TS error */}
+                  <span className="sr-only">Send</span>
+                </Button>
               </div>
-              <div className="flex-1 bg-white dark:bg-slate-800 rounded-[2rem] border border-transparent focus-within:border-indigo-500/30 focus-within:ring-4 focus-within:ring-indigo-500/10 transition-all shadow-sm">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask anything about India..."
-                  className="w-full px-6 py-4 bg-transparent border-none focus:outline-none placeholder:text-slate-400 text-slate-700 dark:text-slate-200 disabled:opacity-50"
-                />
-              </div>
-              <Button
-                onClick={handleSend}
-                disabled={!input.trim()}
-                className={`rounded-full w-14 h-14 p-0 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/30 ${!input.trim() ? 'opacity-50' : 'hover:scale-105 active:scale-95'
-                  }`}
-                icon={<Send className="w-5 h-5 translate-x-0.5" />}
-              >
-                {/* Empty child to fix TS error */}
-                <span className="sr-only">Send</span>
-              </Button>
             </div>
           </div>
         </GlassCard>
